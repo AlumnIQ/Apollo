@@ -10,8 +10,8 @@ Apollo.js is a simple read-through-cache REST api wrapper. You use it like this:
 	);
 
 	myApi.get(
-		'cache_key', 
-		'/some/resource', 
+		'cache_key',
+		'/some/resource',
 		{requestParam: "value"},
 		3 * minutes,
 		function(result){
@@ -19,6 +19,10 @@ Apollo.js is a simple read-through-cache REST api wrapper. You use it like this:
 			console.log(result);
 		}
 	);
+
+You can clear the cache thusly:
+
+	myApi.nukeCache();
 
 ## Dependencies
 
