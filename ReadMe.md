@@ -1,45 +1,80 @@
 # Apollo.js
 
-Apollo.js is a simple read-through-cache REST api wrapper. You use it like this:
+Apollo.js is a simple read-through-cache REST api wrapper. Use it like this:
 
     var minutes = 1000 * 60; //a minute in milliseconds, for readable time measurements
 
-    var myApi = Apollo.init(
-		"http://example.com/api",
-		30 * minutes
+    var myApi = new Apollo(
+		"http://example.com/api"  //api base-url
+		, 30 * minutes            //default cache valid duration
+		, "first_api"             //name this cache (unique to avoid localStorage collisions)
 	);
 
 	myApi.get(
-		'cache_key',
-		'/some/resource',
-		{requestParam: "value"},
-		3 * minutes,
-		function(result){
+		'cache_key'
+		, '/some/resource'
+		, { requestParam: "value" }
+
+		//cache is valid for...
+		, 3 * minutes
+
+		//force-refresh (ignore local cache)
+		, false
+
+		//success handler (jQuery AJAX success handler interface)
+		, function(result){
 			//result = false on error; your api/cache result on success
 			console.log(result);
 		}
+
+		//fail handler (jQuery AJAX fail handler interface)
+		, function (jqXHR, status, error){
+			console.error(status, error);
+		}
+
 	);
 
-You can clear the cache thusly:
+Clear the cache thusly:
 
-	myApi.nukeCache();
+	myApi.nuke();
 
 ## Dependencies
 
 Depends on jQuery for AJAX!
 
+## Supports POST, PUT, and DELETE too
+
+All REST verbs are supported as of version 0.3, but caching is only done for GET requests.
+
+	myApi.post(
+		'/nsa/track/everything'                 //path
+		, { user: 42 }                          //data
+		, function(data){                       //successCallback
+			console.log(data);
+		}
+		, function(jqXHR, status, error){       //errorCallback
+			console.error(status, error, jqXHR);
+		}
+	);
+
+	myApi.put( path, data, successCallback, errorCallback );
+	myApi.del( path, data, successCallback, errorCallback );
+
 ## RequireJS compatible
 
 	require(['apollo'], function(apollo){
 
-		var myCache = apollo.init('http://example.com/api', 5 * minutes);
+		var myApi = apollo.init('http://example.com/api', 5 * minutes);
 
 	});
 
-## To-do:
+*\* Still expects jQuery in the global scope*
 
-* Implement DELETE and PUT methods so that you can have a consistent api interface even though you don't want caching with these methods. (POST already implemented.)
-* Switch to separate success & error callbacks.
+## Want some debug output in the console?
+
+Pass `true` as an additional final argument to the constructor:
+
+	var api = new Apollo('http://example.com/api', 30 * minutes, 'example', true);
 
 ## MIT LICENSED
 
@@ -48,7 +83,3 @@ Depends on jQuery for AJAX!
 >The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 >
 >THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-### What's with the name?!
-
-I'm not _incredibly_ superstitious, but suffice it to say that I'm not ready to divulge this just yet. Maybe after a certain other project ships. ;)
