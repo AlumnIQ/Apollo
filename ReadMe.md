@@ -2,41 +2,45 @@
 
 Apollo.js is a simple read-through-cache REST api wrapper. Use it like this:
 
-    var minutes = 1000 * 60; //a minute in milliseconds, for readable time measurements
+```js
+var minutes = 1000 * 60; //a minute in milliseconds, for readable time measurements
 
-    var myApi = new Apollo(
-		"http://example.com/api"  //api base-url
-		, 30 * minutes            //default cache valid duration
-		, "first_api"             //name this cache (unique to avoid localStorage collisions)
-	);
+var myApi = new Apollo(
+	"http://example.com/api"  //api base-url
+	, 30 * minutes            //default cache valid duration
+	, "first_api"             //name this cache (unique to avoid localStorage collisions)
+);
 
-	myApi.get(
-		'cache_key'
-		, '/some/resource'
-		, { requestParam: "value" }
+myApi.get(
+	'cache_key'
+	, '/some/resource'
+	, { requestParam: "value" }
 
-		//cache is valid for...
-		, 3 * minutes
+	//cache is valid for...
+	, 3 * minutes
 
-		//force-refresh (ignore local cache)
-		, false
+	//force-refresh (ignore local cache)
+	, false
 
-		//success handler (jQuery AJAX success handler interface)
-		, function(result){
-			//result = false on error; your api/cache result on success
-			console.log(result);
-		}
+	//success handler (jQuery AJAX success handler interface)
+	, function(result){
+		//result = false on error; your api/cache result on success
+		console.log(result);
+	}
 
-		//fail handler (jQuery AJAX fail handler interface)
-		, function (jqXHR, status, error){
-			console.error(status, error);
-		}
+	//fail handler (jQuery AJAX fail handler interface)
+	, function (jqXHR, status, error){
+		console.error(status, error);
+	}
 
-	);
+);
+```
 
 Clear the cache thusly:
 
-	myApi.nuke();
+```js
+myApi.nuke();
+```
 
 ## Dependencies
 
@@ -46,35 +50,40 @@ Depends on jQuery for AJAX!
 
 All REST verbs are supported as of version 0.3, but caching is only done for GET requests.
 
-	myApi.post(
-		'/nsa/track/everything'                 //path
-		, { user: 42 }                          //data
-		, function(data){                       //successCallback
-			console.log(data);
-		}
-		, function(jqXHR, status, error){       //errorCallback
-			console.error(status, error, jqXHR);
-		}
-	);
+```js
+myApi.post(
+	'/nsa/track/everything'                 //path
+	, { user: 42 }                          //data
+	, function(data){                       //successCallback
+		console.log(data);
+	}
+	, function(jqXHR, status, error){       //errorCallback
+		console.error(status, error, jqXHR);
+	}
+);
 
-	myApi.put( path, data, successCallback, errorCallback );
-	myApi.del( path, data, successCallback, errorCallback );
+myApi.put( path, data, successCallback, errorCallback );
+myApi.del( path, data, successCallback, errorCallback );
+```
 
 ## RequireJS compatible
 
-	require(['apollo'], function(apollo){
+```js
+require(['apollo'], function(apollo){
 
-		var myApi = apollo.init('http://example.com/api', 5 * minutes);
+	var myApi = apollo.init('http://example.com/api', 5 * minutes);
 
-	});
-
-*\* Still expects jQuery in the global scope*
+});
+```
+*Still expects jQuery in the global scope*
 
 ## Want some debug output in the console?
 
 Pass `true` as an additional final argument to the constructor:
 
-	var api = new Apollo('http://example.com/api', 30 * minutes, 'example', true);
+```js
+var api = new Apollo('http://example.com/api', 30 * minutes, 'example', true);
+```
 
 ## MIT LICENSED
 
