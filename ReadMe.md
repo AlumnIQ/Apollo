@@ -28,6 +28,14 @@ You can clear the cache thusly:
 
 Depends on jQuery for AJAX!
 
+## RequireJS compatible
+
+	require(['apollo'], function(apollo){
+
+		var myCache = apollo.init('http://example.com/api', 5 * minutes);
+
+	});
+
 ## To-do:
 
 * Implement DELETE and PUT methods so that you can have a consistent api interface even though you don't want caching with these methods. (POST already implemented.)
