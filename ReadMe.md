@@ -42,6 +42,13 @@ Clear the cache thusly:
 myApi.nuke();
 ```
 
+Apollo includes a `set(key, value)` method for setting arbitrary data, in addition to the read-through-cache;
+so you can store your application's settings here and they'll be auto-loaded on startup if available.
+
+```js
+myApi.set('settings', { verbose: false, debug: false, awesome: true });
+```
+
 ## Dependencies
 
 Depends on jQuery for AJAX!
