@@ -1,6 +1,6 @@
 {
   "name": "Apollo",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Apollo.js is a simple read-through-cache REST api wrapper.",
   "main": "apollo.js",
   "directories": {
